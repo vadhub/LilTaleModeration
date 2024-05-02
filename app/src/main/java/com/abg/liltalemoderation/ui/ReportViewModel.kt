@@ -37,13 +37,16 @@ class ReportViewModel(private val complaintRepository: ComplaintRepository) : Vi
 
             is Resource.Success -> {
                 success.postValue(Unit)
-                reports.postValue(resource.result)
             }
 
             is Resource.Failure -> {
                 error.postValue(resource.exception)
             }
         }
+    }
+
+    fun fetchReports() = viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+        reports.postValue((complaintRepository.getReports() as Resource.Success).result)
     }
 
     fun removePost(idPost: Long, idComplaint: Long) = viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {

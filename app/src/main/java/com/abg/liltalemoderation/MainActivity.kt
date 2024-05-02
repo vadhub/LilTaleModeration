@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.pm.ActivityInfo
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -32,7 +33,6 @@ class MainActivity : AppCompatActivity() {
 
         if (isAccessInternet(this)) {
             if (configuration.getFirstStart()) {
-
                 RemoteInstance.setUser(
                     User(configuration.getLogin(), configuration.getPass())
                 )
