@@ -56,9 +56,6 @@ object RemoteInstance {
     private fun retrofitWithAuth(): Retrofit.Builder =
         retrofitBase().client(client(basicAuthInterceptor(user.username, user.password)))
 
-    private fun retrofitForLogin(username: String, password: String): Retrofit.Builder =
-        retrofitBase().client(client(basicAuthInterceptor(username, password)))
-
     fun setPicasso(context: Context) {
         try {
             val picasso = Picasso.Builder(context)

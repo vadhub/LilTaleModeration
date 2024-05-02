@@ -14,7 +14,9 @@ import java.text.SimpleDateFormat
 
 class ReportAdapter(
     private val load: FileViewModel,
-    private val playlistHandler: PlaylistHandler
+    private val playlistHandler: PlaylistHandler,
+    private val leavePost: (Long) -> Unit,
+    private val deletePost: (Long) -> Unit
 ) : RecyclerView.Adapter<ReportAdapter.PostViewHolder>() {
 
     private var reports: List<ComplaintReport> = emptyList()
@@ -48,17 +50,20 @@ class ReportAdapter(
         private val imageIcon = itemView.imageIconPost
         private val hashtag = itemView.textViewHashtag
         private val nikName = itemView.textViewNikName
-        private var postResponse = ComplaintReport.empty()
+        private val removeComplaint = itemView.removeComplaint
+        private val removePost = itemView.removePost
 
         @SuppressLint("SimpleDateFormat")
         fun bind(report: ComplaintReport) {
-            this.postResponse = report
 
             imageIcon.setImageDrawable(null)
             imageViewPost.setImageDrawable(null)
             nikName.text = ""
             hashtag.text = ""
             textViewDate.text = ""
+
+            removeComplaint.setOnClickListener { leavePost.invoke(report.idComplaint) }
+            removePost.setOnClickListener { deletePost.invoke(report.post.postId) }
 
             val parser = SimpleDateFormat("yyyy-MM-dd")
             val formatter = SimpleDateFormat("dd.MM.yyyy")

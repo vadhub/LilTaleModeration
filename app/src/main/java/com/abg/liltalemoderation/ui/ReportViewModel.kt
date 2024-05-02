@@ -50,8 +50,8 @@ class ReportViewModel(private val complaintRepository: ComplaintRepository) : Vi
         postDelete.postValue(complaintRepository.removePost(idPost))
     }
 
-    fun complaintRemove(complaintReport: ComplaintReport) = viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-        complaintDelete.postValue(complaintRepository.removeComplaint(complaintReport))
+    fun complaintRemove(id: Long) = viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+        complaintDelete.postValue(complaintRepository.removeComplaint(id))
     }
 }
 

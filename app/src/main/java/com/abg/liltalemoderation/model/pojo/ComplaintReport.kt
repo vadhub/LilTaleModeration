@@ -11,14 +11,10 @@ data class ComplaintReport(
 
     @SerializedName("idComplaint")
     @Expose
-    val idComplaint: Int,
+    val idComplaint: Long,
 
     @SerializedName("dateCreated")
     @Expose
     val dateCreated: String,
 
-    ) {
-    companion object {
-        fun empty(): ComplaintReport =ComplaintReport(PostResponse.empty(), -1, "")
-    }
-}
+    )

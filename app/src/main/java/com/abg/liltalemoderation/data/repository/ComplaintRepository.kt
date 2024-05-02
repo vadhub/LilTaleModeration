@@ -33,7 +33,7 @@ class ComplaintRepository(private val remoteInstance: RemoteInstance) {
         return Resource.Failure(Exception("fail"))
     }
 
-    suspend fun removeComplaint(complaintReport: ComplaintReport): Resource<Int> {
+    suspend fun removeComplaint(id: Long): Resource<Int> {
         // remove complaint
         // post ok
         return Resource.Success(200)

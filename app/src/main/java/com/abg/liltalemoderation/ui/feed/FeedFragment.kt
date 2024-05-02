@@ -37,7 +37,14 @@ class FeedFragment : AudioBaseFragment(){
         val recyclerView: RecyclerView = binding.feedRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(thisContext)
 
-        adapter = ReportAdapter(load, prepareAudioHandler())
+        val removePost: (Long) -> Unit = {
+            reportViewModel.removePost(it)
+        }
+        val removeComplaint: (Long) -> Unit = {
+            reportViewModel.complaintRemove(it)
+        }
+
+        adapter = ReportAdapter(load, prepareAudioHandler(), removePost, removeComplaint)
         recyclerView.adapter = adapter
 
         reportViewModel.reports.observe(viewLifecycleOwner) {
