@@ -1,4 +1,4 @@
-package com.abg.liltalemoderation.data.remote
+package com.abg.liltalemoderation.data.remote.service
 
 import retrofit2.Response
 import retrofit2.http.DELETE

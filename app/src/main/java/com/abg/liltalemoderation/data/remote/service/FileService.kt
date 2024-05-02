@@ -1,4 +1,4 @@
-package com.abg.liltalemoderation.data.remote;
+package com.abg.liltalemoderation.data.remote.service;
 
 import okhttp3.ResponseBody
 import retrofit2.Response

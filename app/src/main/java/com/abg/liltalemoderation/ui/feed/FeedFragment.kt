@@ -1,32 +1,29 @@
 package com.abg.liltalemoderation.ui.feed
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.ProgressBar
-import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.abg.liltalemoderation.data.remote.RemoteInstance
+import com.abg.liltalemoderation.data.repository.ComplaintRepository
 import com.abg.liltalemoderation.databinding.FragmentFeedBinding
 import com.abg.liltalemoderation.ui.AudioBaseFragment
-import com.abg.liltalemoderation.ui.PostAdapter
-import com.abg.liltalemoderation.R
+import com.abg.liltalemoderation.ui.ReportAdapter
+import com.abg.liltalemoderation.ui.ReportViewModel
+import com.abg.liltalemoderation.ui.ReportViewModelFactory
 
 class FeedFragment : AudioBaseFragment(){
 
     private var _binding: FragmentFeedBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapter: PostAdapter
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private lateinit var adapter: ReportAdapter
+    private val reportViewModel: ReportViewModel by activityViewModels {
+        ReportViewModelFactory(ComplaintRepository(RemoteInstance))
     }
 
     override fun onCreateView(
@@ -43,41 +40,14 @@ class FeedFragment : AudioBaseFragment(){
         val recyclerView: RecyclerView = binding.feedRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(thisContext)
 
-        adapter = PostAdapter(load, prepareAudioHandler())
+        adapter = ReportAdapter(load, prepareAudioHandler())
         recyclerView.adapter = adapter
 
-        postViewModel.posts.observe(viewLifecycleOwner) {
+        reportViewModel.reports.observe(viewLifecycleOwner) {
             adapter.setPosts(it)
             progressBar.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
         }
-
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-
-        inflater.inflate(R.menu.menu_search_view, menu)
-
-        val menuItem = menu.findItem(R.id.action_search)
-        val searchView = menuItem.actionView as SearchView
-        val searchText: EditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text)
-        searchText.setTextColor(Color.WHITE)
-
-        searchView.isIconified = true
-        searchView.queryHint = getString(R.string.searching)
-
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                if (!query.isNullOrEmpty()) {
-                    postViewModel.getPostsByText(query)
-                }
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return true
-            }
-        })
 
     }
 

@@ -17,4 +17,8 @@ data class ComplaintReport(
     @Expose
     val dateCreated: String,
 
-    )
+    ) {
+    companion object {
+        fun empty(): ComplaintReport =ComplaintReport(PostResponse.empty(), -1, "")
+    }
+}
