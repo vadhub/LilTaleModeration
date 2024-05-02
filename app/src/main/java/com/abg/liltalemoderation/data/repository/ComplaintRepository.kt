@@ -23,19 +23,20 @@ class ComplaintRepository(private val remoteInstance: RemoteInstance) {
     // remove post from user account
     // post not ok
     suspend fun removePost(id: Long): Resource<Int> {
-
         val response = remoteInstance.apiPost().deletePost(id)
-
         if (response.isSuccessful) {
             return Resource.Success(response.code())
         }
-
         return Resource.Failure(Exception("fail"))
     }
 
+    // remove complaint
+    // post ok
     suspend fun removeComplaint(id: Long): Resource<Int> {
-        // remove complaint
-        // post ok
-        return Resource.Success(200)
+        val response = remoteInstance.apiComplaintReport().deleteReport(id)
+        if (response.isSuccessful) {
+            Resource.Success(response.code())
+        }
+        return Resource.Failure(Exception("fail"))
     }
 }
