@@ -16,12 +16,10 @@ import com.abg.liltalemoderation.model.TimeFormatter
 import com.abg.liltalemoderation.model.pojo.Audio
 import com.google.android.material.imageview.ShapeableImageView
 
-class AudioAdapter(private val parentPosition: Int, private val playlistHandler: PlaylistHandler, private val isRecord: Boolean) :
+class AudioAdapter(private val parentPosition: Int, private val playlistHandler: PlaylistHandler) :
     Adapter<AudioAdapter.RecordViewHolder>() {
 
     private var audio: List<Audio> = emptyList()
-
-    var removeListener: (audio: Audio) -> Unit = {}
 
     @SuppressLint("NotifyDataSetChanged")
     fun setRecords(audios: List<Audio>) {
@@ -45,7 +43,6 @@ class AudioAdapter(private val parentPosition: Int, private val playlistHandler:
         val playButton: ShapeableImageView = item.playButton
         val seekBar: SeekBar = item.seekBar
         val progressBar: ProgressBar = item.loadingProgressBar
-        val removeButton: ImageButton = item.removeButton
         private var audio = Audio(-1,"", 0L, "")
 
         @SuppressLint("SetTextI18n")
@@ -53,11 +50,6 @@ class AudioAdapter(private val parentPosition: Int, private val playlistHandler:
 
             this.audio = audio
 
-            if (isRecord) {
-                removeButton.visibility = View.VISIBLE
-            }
-
-            removeButton.setOnClickListener(this)
             playButton.setOnClickListener(this)
             seekBar.setOnSeekBarChangeListener(this)
 
@@ -66,7 +58,6 @@ class AudioAdapter(private val parentPosition: Int, private val playlistHandler:
 
         override fun onClick(v: View?) {
             when (v) {
-                removeButton -> {removeListener.invoke(audio)}
                 playButton -> {playlistHandler.play(parentPosition, layoutPosition, this, audio)}
             }
         }

@@ -76,7 +76,7 @@ class ReportAdapter(
             if (report.post.hashtags.isNotEmpty()) hashtag.text = report.post.hashtags.map { it.hashtagName }.reduce { acc, s -> "$acc $s" }
 
             recyclerViewAudio.layoutManager = LinearLayoutManager(itemView.context)
-            adapter = AudioAdapter(layoutPosition, playlistHandler, false)
+            adapter = AudioAdapter(layoutPosition, playlistHandler)
             adapter.setRecords(report.post.listAudio)
             recyclerViewAudio.adapter = adapter
         }
