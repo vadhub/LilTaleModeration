@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.abg.liltalemoderation.R
 import com.abg.liltalemoderation.data.remote.RemoteInstance
 import com.abg.liltalemoderation.data.remote.exception.UnauthorizedException
@@ -57,7 +58,10 @@ class LoginFragment : BaseFragment() {
 
         reportViewModel.success.observe(viewLifecycleOwner) {
             RemoteInstance.setPicasso(thisContext)
-            //findNavController().navigate(R.id.action_registrationFragment_to_accountFragment)
+            configuration.saveLogin(username.text.toString().trim())
+            configuration.savePass(password.text.toString().trim())
+            configuration.saveFirstStart(true)
+            findNavController().navigate(R.id.action_loginFragment_to_feedFragment)
         }
 
         buttonLogin.setOnClickListener {
