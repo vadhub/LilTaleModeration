@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName
 
 data class ComplaintReport(
 
+    @SerializedName("id")
+    @Expose
+    val id: Long,
+
     @SerializedName("post")
     @Expose
     val post: PostResponse,

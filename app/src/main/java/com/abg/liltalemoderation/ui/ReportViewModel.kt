@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.abg.liltalemoderation.data.remote.HandleResponse
 import com.abg.liltalemoderation.data.remote.RemoteInstance
 import com.abg.liltalemoderation.data.remote.Resource
 import com.abg.liltalemoderation.data.repository.ComplaintRepository
@@ -14,9 +13,6 @@ import ir.logicbase.livex.SingleLiveEvent
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.Exception
-import java.util.concurrent.atomic.AtomicInteger
-import java.util.concurrent.atomic.AtomicLong
 
 class ReportViewModel(private val complaintRepository: ComplaintRepository) : ViewModel() {
 
@@ -51,11 +47,12 @@ class ReportViewModel(private val complaintRepository: ComplaintRepository) : Vi
 
     fun removePost(idPost: Long, idComplaint: Long) = viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
         postDelete.postValue(complaintRepository.removePost(idPost))
-        complaintRepository.removeComplaint(idComplaint)
+        complaintRemove(idComplaint)
     }
 
     fun complaintRemove(id: Long) = viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
         complaintDelete.postValue(complaintRepository.removeComplaint(id))
+        reports.postValue(reports.value?.filter { it.id != id })
     }
 }
 

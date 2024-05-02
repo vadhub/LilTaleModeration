@@ -62,8 +62,8 @@ class ReportAdapter(
             hashtag.text = ""
             textViewDate.text = ""
 
-            removeComplaint.setOnClickListener { leavePost.invoke(report.idComplaint) }
-            removePost.setOnClickListener { deletePost.invoke(report.post.postId, report.idComplaint) }
+            removeComplaint.setOnClickListener { leavePost.invoke(report.id) }
+            removePost.setOnClickListener { deletePost.invoke(report.post.postId, report.id) }
 
             val parser = SimpleDateFormat("yyyy-MM-dd")
             val formatter = SimpleDateFormat("dd.MM.yyyy")
