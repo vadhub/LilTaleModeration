@@ -4,19 +4,25 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.abg.liltalemoderation.data.remote.HandleResponse
+import com.abg.liltalemoderation.data.remote.RemoteInstance
 import com.abg.liltalemoderation.data.remote.Resource
 import com.abg.liltalemoderation.data.repository.ComplaintRepository
 import com.abg.liltalemoderation.model.pojo.ComplaintReport
+import com.abg.liltalemoderation.model.pojo.User
 import ir.logicbase.livex.SingleLiveEvent
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 
 class ReportViewModel(private val complaintRepository: ComplaintRepository) : ViewModel() {
 
-    var reports: MutableLiveData<Resource<List<ComplaintReport>>> = MutableLiveData()
+    var error: SingleLiveEvent<Exception> = SingleLiveEvent()
+    var success: SingleLiveEvent<Unit> = SingleLiveEvent()
+    var reports: MutableLiveData<List<ComplaintReport>> = MutableLiveData()
     val postDelete: SingleLiveEvent<Resource<Int>> = SingleLiveEvent()
     val complaintDelete: SingleLiveEvent<Resource<Int>> = SingleLiveEvent()
 
@@ -24,8 +30,20 @@ class ReportViewModel(private val complaintRepository: ComplaintRepository) : Vi
         throwable.printStackTrace()
     }
 
-    fun getReports() = viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-        reports.postValue(complaintRepository.getReports())
+    fun auth(username: String, password: String) = viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+        RemoteInstance.setUser(User(username, password))
+        when(val resource= complaintRepository.getReports()) {
+            is Resource.Loading -> {}
+
+            is Resource.Success -> {
+                success.postValue(Unit)
+                reports.postValue(resource.result)
+            }
+
+            is Resource.Failure -> {
+                error.postValue(resource.exception)
+            }
+        }
     }
 
     fun removePost(idPost: Long) = viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {

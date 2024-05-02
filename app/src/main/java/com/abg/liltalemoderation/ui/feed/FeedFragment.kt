@@ -22,9 +22,6 @@ class FeedFragment : AudioBaseFragment(){
     private val binding get() = _binding!!
 
     private lateinit var adapter: ReportAdapter
-    private val reportViewModel: ReportViewModel by activityViewModels {
-        ReportViewModelFactory(ComplaintRepository(RemoteInstance))
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
