@@ -1,10 +1,9 @@
-package com.abg.liltalemoderation.ui
+package com.abg.liltalemoderation.ui.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.SeekBar
 import android.widget.TextView

@@ -9,7 +9,7 @@ import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.abg.liltalemoderation.R
 import com.abg.liltalemoderation.model.pojo.Audio
-import com.abg.liltalemoderation.ui.AudioAdapter
+import com.abg.liltalemoderation.ui.adapter.AudioAdapter
 
 class PlaylistHandler(
     private val player: ExoPlayer,

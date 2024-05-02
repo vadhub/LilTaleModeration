@@ -1,4 +1,4 @@
-package com.abg.liltalemoderation.ui
+package com.abg.liltalemoderation.ui.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.abg.liltalemoderation.databinding.ItemPostBinding
 import com.abg.liltalemoderation.model.PlaylistHandler
 import com.abg.liltalemoderation.model.pojo.ComplaintReport
-import com.abg.liltalemoderation.model.pojo.PostResponse
+import com.abg.liltalemoderation.ui.FileViewModel
 import java.text.SimpleDateFormat
 
 class ReportAdapter(
     private val load: FileViewModel,
     private val playlistHandler: PlaylistHandler,
     private val leavePost: (Long) -> Unit,
-    private val deletePost: (Long) -> Unit
+    private val deletePost: (Long, Long) -> Unit
 ) : RecyclerView.Adapter<ReportAdapter.PostViewHolder>() {
 
     private var reports: List<ComplaintReport> = emptyList()
@@ -63,7 +63,7 @@ class ReportAdapter(
             textViewDate.text = ""
 
             removeComplaint.setOnClickListener { leavePost.invoke(report.idComplaint) }
-            removePost.setOnClickListener { deletePost.invoke(report.post.postId) }
+            removePost.setOnClickListener { deletePost.invoke(report.post.postId, report.idComplaint) }
 
             val parser = SimpleDateFormat("yyyy-MM-dd")
             val formatter = SimpleDateFormat("dd.MM.yyyy")

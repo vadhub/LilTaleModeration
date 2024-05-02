@@ -5,16 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.abg.liltalemoderation.data.remote.RemoteInstance
-import com.abg.liltalemoderation.data.repository.ComplaintRepository
 import com.abg.liltalemoderation.databinding.FragmentFeedBinding
 import com.abg.liltalemoderation.ui.AudioBaseFragment
-import com.abg.liltalemoderation.ui.ReportAdapter
-import com.abg.liltalemoderation.ui.ReportViewModel
-import com.abg.liltalemoderation.ui.ReportViewModelFactory
+import com.abg.liltalemoderation.ui.adapter.ReportAdapter
 
 class FeedFragment : AudioBaseFragment(){
 
@@ -37,14 +32,14 @@ class FeedFragment : AudioBaseFragment(){
         val recyclerView: RecyclerView = binding.feedRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(thisContext)
 
-        val removePost: (Long) -> Unit = {
-            reportViewModel.removePost(it)
+        val removePost: (Long, Long) -> Unit = { post, comp ->
+            reportViewModel.removePost(post, comp)
         }
         val removeComplaint: (Long) -> Unit = {
             reportViewModel.complaintRemove(it)
         }
 
-        adapter = ReportAdapter(load, prepareAudioHandler(), removePost, removeComplaint)
+        adapter = ReportAdapter(load, prepareAudioHandler(), leavePost = removeComplaint, deletePost = removePost)
         recyclerView.adapter = adapter
 
         reportViewModel.reports.observe(viewLifecycleOwner) {
